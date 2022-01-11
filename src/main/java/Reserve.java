@@ -1,4 +1,7 @@
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Reserve {
     private Integer id;
@@ -54,5 +57,15 @@ public class Reserve {
 
     public void setVideoId(Integer videoId) {
         this.videoId = videoId;
+    }
+
+    public Reserve(Connection connection) throws SQLException {
+        String createTable="create table if not exists reserve(id serial primary key,end_date date,reserve_date date ,status boolean,customer_id integer,video_id integer , " +
+                "constraint fk_customer_id foreign key (customer_id) references customer(id) ," +
+                "constraint fk_video_id foreign key (video_id) references video(id))";
+        PreparedStatement preparedStatement=
+                connection.prepareStatement(createTable);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
     }
 }

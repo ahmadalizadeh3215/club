@@ -1,4 +1,7 @@
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Customer {
     private Integer id;
@@ -36,5 +39,14 @@ public class Customer {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Customer(Connection connection) throws SQLException {
+        String createTable="create table if not exists customer(id serial primary key,last_name varchar(255),first_name varchar(255),created_date date)";
+        PreparedStatement preparedStatement=
+        connection.prepareStatement(createTable);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+
     }
 }
